@@ -1,5 +1,6 @@
 package io.github.theshid.prettylog
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 
@@ -24,6 +25,7 @@ class PrettyLoggingService(
     private val maxStackLines: Int = DEFAULT_MAX_STACK_LINES,
 ) : LoggingService {
 
+    @OptIn(ExperimentalSerializationApi::class)
     private val jsonPretty = Json {
         prettyPrint = true
         prettyPrintIndent = "  "

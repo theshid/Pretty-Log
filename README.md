@@ -39,12 +39,12 @@ Then in the consumer module's **`build.gradle.kts`**:
 
 ```kotlin
 dependencies {
-    implementation("com.github.the-shid:PrettyLog:0.1.0")
+    implementation("com.github.theshid:Pretty-Log:0.1.0")
 }
 ```
 
-(Replace `the-shid` with your GitHub username, and `0.1.0` with whatever
-tag you published.)
+Bump `0.1.0` whenever you want a newer release — every tag pushed to this
+repo is resolvable by JitPack.
 
 ### Via Maven Local (for iterating on the library itself)
 
@@ -180,7 +180,7 @@ paths, easiest first.
    title it, publish.
 3. Visit `https://jitpack.io/#YOUR_USERNAME/PrettyLog` — JitPack picks up
    the tag automatically. First build takes a minute or two.
-4. Consumers use `com.github.YOUR_USERNAME:PrettyLog:0.1.0`.
+4. Consumers use `com.github.YOUR_USERNAME:Pretty-Log:0.1.0`.
 
 No signing, no credentials, no account setup beyond GitHub. Ideal for a
 first library.
