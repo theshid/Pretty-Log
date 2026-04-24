@@ -1,0 +1,7 @@
+io.github.theshid.prettylog-pngs-0 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/build/generated/res/pngs/release
+io.github.theshid.prettylog-resValues-1 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/build/generated/res/resValues/release
+io.github.theshid.prettylog-mergeReleaseResources-2 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/build/intermediates/incremental/release/mergeReleaseResources/merged.dir
+io.github.theshid.prettylog-mergeReleaseResources-3 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/build/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+io.github.theshid.prettylog-release-4 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/build/intermediates/merged_res/release/mergeReleaseResources
+io.github.theshid.prettylog-main-5 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/src/main/res
+io.github.theshid.prettylog-release-6 /Users/rachidinsa/AndroidStudioProjects/PrettyLog/prettylog/src/release/res
