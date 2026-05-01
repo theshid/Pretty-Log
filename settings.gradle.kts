@@ -7,7 +7,10 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // Kotlin Multiplatform's iOS targets need to add an Ivy repo for the
+    // Konan compiler distribution. The KMP plugin contributes that repo at
+    // project level, so we have to allow project repos to take precedence.
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()

@@ -1,8 +1,50 @@
 plugins {
+    id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     `maven-publish`
+}
+
+kotlin {
+    androidTarget {
+        publishLibraryVariants("release")
+        compilations.all {
+            kotlinOptions { jvmTarget = "17" }
+        }
+    }
+
+    jvm {
+        compilations.all {
+            kotlinOptions { jvmTarget = "17" }
+        }
+    }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+        }
+
+        // Intermediate source set shared by androidMain + jvmMain — both run
+        // on a JVM, so stack-walk (StackTraceElement) and date-formatting
+        // (SimpleDateFormat) actuals live here once instead of twice.
+        val jvmCommonMain by creating { dependsOn(commonMain.get()) }
+        val androidMain by getting { dependsOn(jvmCommonMain) }
+        val jvmMain by getting { dependsOn(jvmCommonMain) }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain.get())
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
+    }
 }
 
 android {
@@ -18,48 +60,25 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
-
-    sourceSets {
-        named("main") {
-            java.srcDirs("src/main/kotlin")
-        }
-    }
 }
 
-dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-}
-
-// Maven publication config — lets consumers either publish to their local
-// Maven via `./gradlew publishToMavenLocal` or consume directly via JitPack.
+// KMP plugin auto-publishes one artifact per target plus a "metadata" root.
+// Consumers depending on `io.github.theshid:prettylog:0.1.0` continue to work —
+// Gradle picks the right variant via Gradle Module Metadata. JitPack supports
+// KMP publication out of the box.
 afterEvaluate {
     publishing {
-        publications {
-            create<MavenPublication>("release") {
-                from(components["release"])
-                groupId = "io.github.theshid"
-                artifactId = "prettylog"
-                version = "0.1.0"
-
-                pom {
-                    name.set("PrettyLog")
-                    description.set("Structured, bordered, emoji-coded Kotlin logger for Android.")
-                    url.set("https://github.com/the-shid/PrettyLog")
-                    licenses {
-                        license {
-                            name.set("MIT License")
-                            url.set("https://opensource.org/licenses/MIT")
-                        }
+        publications.withType<MavenPublication>().configureEach {
+            groupId = "io.github.theshid"
+            version = "0.2.0"
+            pom {
+                name.set("PrettyLog")
+                description.set("Structured, bordered, emoji-coded Kotlin logger — KMP (Android, JVM, iOS).")
+                url.set("https://github.com/the-shid/PrettyLog")
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package io.github.theshid.prettylog
 
+import kotlin.concurrent.Volatile
+
 /**
  * Entry point for configuring the library. Call [init] exactly once — ideally
  * from your `Application.onCreate`. After that the [Log] facade picks up the
