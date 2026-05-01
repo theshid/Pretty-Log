@@ -44,7 +44,7 @@ class PrettyLoggingService(
 
         val lines = buildList {
             add(TOP_BORDER)
-            add("$LEFT_BORDER ${level.emoji} ${level.label}  $THIN_SEPARATOR  Thread: ${Thread.currentThread().name}")
+            add("$LEFT_BORDER ${level.emoji} ${level.label}  $THIN_SEPARATOR  Thread: ${currentThreadName()}")
             add(MIDDLE_BORDER)
             if (caller != null) {
                 add("$LEFT_BORDER $ARROW .${caller.className}.${caller.methodName}(${caller.fileName}:${caller.lineNumber})")

@@ -1,6 +1,7 @@
 package io.github.theshid.prettylog
 
-import kotlin.system.measureTimeMillis
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
 
 /**
  * Static-style logging facade. Delegates to the [LoggingService] registered
@@ -91,9 +92,10 @@ object Log {
      * glance at Logcat flags slow paths: `Warning` if > 3s, `Info` if > 1s,
      * `Debug` otherwise.
      */
+    @OptIn(ExperimentalTime::class)
     inline fun <T> timed(label: String, tag: String? = null, block: () -> T): T {
-        var result: T
-        val elapsed = measureTimeMillis { result = block() }
+        val (result, duration) = measureTimedValue(block)
+        val elapsed = duration.inWholeMilliseconds
         service.log(
             message = "\u23F1 $label completed in ${elapsed}ms",
             tag = tag ?: "Perf",
