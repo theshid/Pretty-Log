@@ -1,9 +1,16 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
     id("org.jetbrains.kotlin.plugin.serialization")
     `maven-publish`
 }
+
+// iOS Kotlin/Native targets need a macOS host (Apple toolchain ships only on
+// macOS). Linux CI runners — JitPack, GitHub Actions ubuntu-latest — silently
+// skip iOS publication; macOS builds publish all five variants.
+val isMac = OperatingSystem.current().isMacOsX
 
 kotlin {
     androidTarget {
@@ -19,9 +26,11 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    if (isMac) {
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -35,14 +44,16 @@ kotlin {
         val androidMain by getting { dependsOn(jvmCommonMain) }
         val jvmMain by getting { dependsOn(jvmCommonMain) }
 
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain.get())
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
+        if (isMac) {
+            val iosX64Main by getting
+            val iosArm64Main by getting
+            val iosSimulatorArm64Main by getting
+            val iosMain by creating {
+                dependsOn(commonMain.get())
+                iosX64Main.dependsOn(this)
+                iosArm64Main.dependsOn(this)
+                iosSimulatorArm64Main.dependsOn(this)
+            }
         }
     }
 }

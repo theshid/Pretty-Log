@@ -1,2 +1,10 @@
 jdk:
   - openjdk17
+
+# JitPack runs on Linux. iOS Kotlin/Native targets are gated on macOS in
+# prettylog/build.gradle.kts, so this Linux build publishes only the Android
+# AAR and JVM JAR (plus the KMP root metadata artifact). iOS klibs need a
+# macOS host — publish those from a developer machine or a macOS GitHub
+# Actions runner if iOS distribution becomes a requirement.
+install:
+  - ./gradlew :prettylog:publishToMavenLocal
